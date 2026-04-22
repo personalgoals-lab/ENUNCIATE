@@ -2,87 +2,81 @@ import streamlit as st
 from streamlit_mic_recorder import mic_recorder
 import time
 
-st.set_page_config(page_title="Eloquence Engine", page_icon="🎙️")
+st.set_page_config(page_title="Eloquence Engine 2.0", page_icon="🎙️")
 
 # --- APP HEADER ---
-st.title("🎙️ Eloquence Engine")
-st.markdown("""
-**Your Daily Voice Architect.** This app is designed to help you transition from 'blurry' speech to stage-ready confidence. 
-By combining grounding therapy, physical enunciation drills, and real-time feedback, 
-we are rebuilding your communication muscles for your future clients and that TED stage.
-""")
+st.title("🎙️ Eloquence Engine 2.0")
+st.markdown("### From Clarity to Charisma: Your Daily Stage-Ready System")
 
-# --- STEP 1: STABILIZE & GROUNDING (The Pac-Man Therapy Layer) ---
-st.divider()
-with st.expander("✨ Step 1: Ground Your Nervous System", expanded=True):
-    st.write("Follow the Pac-Man to stabilize your breath (4-7-8 Technique).")
+# --- SIDEBAR: NAVIGATION & PROGRESS ---
+st.sidebar.header("Navigation")
+menu = st.sidebar.radio("Go To:", ["Daily Training", "Charisma Mastery Vault", "Stage Readiness Tracker"])
+
+# --- CHARISMA DATA ---
+charisma_keys = {
+    "1. First Impression Hacks": "The 'Eyebrow Flash' & 2-Second Smile. Use open palms to show you aren't a threat.",
+    "2. Build Trust with Voice": "End your sentences with a *descending* inflection. It makes you sound authoritative.",
+    "3. Confidence Wins": "Slow down your speech by 10%. Silence is a power move, not a mistake.",
+    "4. Speak Up in Any Room": "The 'First 5 Rule': Make a comment within the first 5 mins of a meeting to establish presence.",
+    "5. Storytelling Secrets": "Use the 'Vulnerability Loop': Share a small mistake, then how you solved it.",
+    "6. Body Language": "Power Posing: Hands on hips, feet wide. Hold for 2 mins before a call to boost testosterone.",
+    "7. Read People Like a Pro": "Look for 'Blocking': If someone crosses their arms or legs, they are losing interest.",
+    "8. Give Tough Feedback Fast": "Use the 'I feel...' method. 'I feel concerned about the timeline,' instead of 'You are late.'",
+    "9. Handle Difficult People": "The 'Fogging' Technique: Agree with any truth in their criticism to de-arm them.",
+    "10. Say NO & Be Likable": "The 'Positive No': 'I'd love to help, but my current focus is on [X] right now.'",
+    "11. Interrupt Smoothly": "The 'Ledge': Wait for a breath, say 'That's a great point, and building on that...'",
+    "12. Defuse Any Conflict": "Lower your volume. When they get loud, you get quieter. It forces them to listen.",
+    "13. Listen Like a Leader": "Reflective Listening: 'So what I’m hearing is...' It builds instant deep rapport.",
+    "14. Small Talk Magic": "Use the F.O.R.D. Method: Ask about Family, Occupation, Recreation, or Dreams."
+}
+
+# --- PAGE 1: DAILY TRAINING ---
+if menu == "Daily Training":
+    with st.expander("✨ Step 1: Pac-Man Grounding (4-7-8)", expanded=False):
+        if st.button("🚀 Start 1-Minute Grounding"):
+            placeholder = st.empty()
+            for cycle in range(3):
+                for i in range(1, 5): # Inhale
+                    placeholder.markdown(f"### 😤 Inhale... \n # 👄 {'· ' * (4-i)} 🍕")
+                    time.sleep(1)
+                for i in range(1, 8): # Hold
+                    placeholder.markdown(f"### ✋ Hold... \n # 👄 🍕")
+                    time.sleep(1)
+                for i in range(1, 9): # Exhale
+                    placeholder.markdown(f"### 🌬️ Exhale... \n # {'&nbsp; ' * (i*2)} 👄 💨")
+                    time.sleep(1)
+            placeholder.success("Grounded.")
+
+    tab1, tab2, tab3, tab4 = st.tabs(["Read", "Drills", "Vocab", "Record"])
+    with tab1:
+        st.write("Read slowly. Focus on the 'D' and 'T' endings.")
+        st.info("'The world belongs to those who can articulate their vision with clarity and conviction.'")
+    with tab2:
+        st.warning("1. Red Leather, Yellow Leather\n2. Unique New York\n3. Toy boat, toy boat, toy boat")
+    with tab3:
+        st.success("**Eloquent** (fluent/persuasive) | **Resilient** (quick recovery) | **Strategic** (long-term plan)")
+    with tab4:
+        audio = mic_recorder(start_prompt="Record 3-5 Mins Practice", stop_prompt="Stop & Analyze", key='rec')
+        if audio: st.audio(audio['bytes'])
+
+# --- PAGE 2: CHARISMA VAULT ---
+elif menu == "Charisma Mastery Vault":
+    st.header("The 14 Keys to Charisma")
+    choice = st.selectbox("Pick a skill to master today:", list(charisma_keys.keys()))
     
-    if st.button("🚀 Start 1-Minute Grounding"):
-        placeholder = st.empty()
-        timer_text = st.empty()
-        
-        # Total 1 minute is roughly 3 full cycles of 4-7-8
-        for cycle in range(3):
-            # 1. INHALE (4 seconds) - Pac-Man "Eating"
-            for i in range(1, 5):
-                dots = "· " * (4 - i)
-                placeholder.markdown(f"### 😤 Inhale... \n # 👄 {dots} 🍕")
-                timer_text.write(f"Seconds: {i}")
-                time.sleep(1)
-            
-            # 2. HOLD (7 seconds) - Pac-Man Staying Still
-            for i in range(1, 8):
-                placeholder.markdown(f"### ✋ Hold... \n # 👄 🍕")
-                timer_text.write(f"Seconds: {i}")
-                time.sleep(1)
-                
-            # 3. EXHALE (8 seconds) - Pac-Man Walking Out
-            for i in range(1, 9):
-                spaces = "&nbsp; " * (i * 2)
-                placeholder.markdown(f"### 🌬️ Exhale... \n # {spaces} 👄 💨")
-                timer_text.write(f"Seconds: {i}")
-                time.sleep(1)
-        
-        placeholder.success("🎉 Grounding Complete. You are focused and ready to speak.")
-        timer_text.empty()
-
-# --- THE 30-MINUTE DAILY TRAINING ---
-st.header("Today's Training Circuit")
-tab1, tab2, tab3, tab4 = st.tabs(["1. Read (10m)", "2. Drills (5m)", "3. Vocab (5m)", "4. Record (10m)"])
-
-with tab1:
-    st.subheader("Slow Reading")
-    st.write("Read this aloud. Over-articulate every single syllable.")
-    st.info("""'Precision in speech is the precursor to professional power. 
-    When we articulate clearly, we command the room and instill confidence 
-    in our clients and ourselves.'""")
-
-with tab2:
-    st.subheader("Enunciation Drills")
-    st.write("Repeat these 5 times each. Feel your facial muscles working!")
-    st.warning("1. Red Leather, Yellow Leather\n\n2. The specific skeptic speaks specifically.\n\n3. Proper copper coffee pot.")
-
-with tab3:
-    st.subheader("Vocabulary Expansion")
-    st.write("Incorporate these into your recording next:")
-    st.success("**Synchronicity** (happening at the same time) | **Scalable** (able to grow) | **Concise** (brief but comprehensive)")
-
-with tab4:
-    st.subheader("Record & Playback")
-    st.write("Simulation: *A client asks you, 'What is your vision for your career in 3 years?'*")
+    st.markdown(f"### 💡 The Strategy")
+    st.info(charisma_keys[choice])
     
-    audio = mic_recorder(
-        start_prompt="Click to Start Recording",
-        stop_prompt="Click to Stop & Listen",
-        key='recorder'
-    )
+    st.markdown("### 🛠️ Practice Challenge")
+    st.write(f"Today, find one opportunity to use this **{choice}** technique.")
+    if st.button("Mark as Practiced Today"):
+        st.balloons()
 
-    if audio:
-        st.audio(audio['bytes'])
-        st.write("**Self-Reflection:** Did you use your new vocabulary? Was your voice 'blurry' or 'bright'?")
-
-# --- PROGRESS TRACKING ---
-st.sidebar.header("Stage Readiness")
-progress = st.sidebar.slider("Days Active", 0, 30, 5)
-st.sidebar.progress(progress * 3.33 / 100)
-st.sidebar.write(f"Current Level: {'Newcomer' if progress < 10 else 'Rising Speaker'}")
+# --- PAGE 3: TRACKER ---
+elif menu == "Stage Readiness Tracker":
+    st.header("Your Journey to the Stage")
+    days = st.slider("Days Completed", 0, 100, 1)
+    st.progress(days/100)
+    if days > 10: st.write("✅ Speech 'Blur' is fading.")
+    if days > 30: st.write("✅ Confidence in client meetings is rising.")
+    if days > 90: st.write("🚀 READY FOR THE PODCAST/STAGE.")
