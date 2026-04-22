@@ -4,47 +4,73 @@ import time
 
 st.set_page_config(page_title="Eloquence Engine", page_icon="🎙️")
 
-# --- PART 8 & 1: STABILIZE & GROUNDING (The Therapy Layer) ---
+# --- APP HEADER ---
 st.title("🎙️ Eloquence Engine")
-with st.expander("✨ Step 1: Ground Your Nervous System", expanded=True):
-    st.write("Before you speak, you must be calm. Follow the prompt below:")
-    st.info("Inhale for 4 seconds... Hold for 7... Exhale for 8.")
-    if st.button("Start 1-Minute Grounding Timer"):
-        progress_bar = st.progress(0)
-        for i in range(60):
-            time.sleep(1)
-            progress_bar.progress((i + 1) / 60)
-        st.success("You are grounded. Your voice is ready.")
+st.markdown("""
+**Your Daily Voice Architect.** This app is designed to help you transition from 'blurry' speech to stage-ready confidence. 
+By combining grounding therapy, physical enunciation drills, and real-time feedback, 
+we are rebuilding your communication muscles for your future clients and that TED stage.
+""")
 
-# --- THE 30-MINUTE DAILY TRAINING (Part 10) ---
+# --- STEP 1: STABILIZE & GROUNDING (The Pac-Man Therapy Layer) ---
 st.divider()
-st.header("Today's Training")
+with st.expander("✨ Step 1: Ground Your Nervous System", expanded=True):
+    st.write("Follow the Pac-Man to stabilize your breath (4-7-8 Technique).")
+    
+    if st.button("🚀 Start 1-Minute Grounding"):
+        placeholder = st.empty()
+        timer_text = st.empty()
+        
+        # Total 1 minute is roughly 3 full cycles of 4-7-8
+        for cycle in range(3):
+            # 1. INHALE (4 seconds) - Pac-Man "Eating"
+            for i in range(1, 5):
+                dots = "· " * (4 - i)
+                placeholder.markdown(f"### 😤 Inhale... \n # 👄 {dots} 🍕")
+                timer_text.write(f"Seconds: {i}")
+                time.sleep(1)
+            
+            # 2. HOLD (7 seconds) - Pac-Man Staying Still
+            for i in range(1, 8):
+                placeholder.markdown(f"### ✋ Hold... \n # 👄 🍕")
+                timer_text.write(f"Seconds: {i}")
+                time.sleep(1)
+                
+            # 3. EXHALE (8 seconds) - Pac-Man Walking Out
+            for i in range(1, 9):
+                spaces = "&nbsp; " * (i * 2)
+                placeholder.markdown(f"### 🌬️ Exhale... \n # {spaces} 👄 💨")
+                timer_text.write(f"Seconds: {i}")
+                time.sleep(1)
+        
+        placeholder.success("🎉 Grounding Complete. You are focused and ready to speak.")
+        timer_text.empty()
 
+# --- THE 30-MINUTE DAILY TRAINING ---
+st.header("Today's Training Circuit")
 tab1, tab2, tab3, tab4 = st.tabs(["1. Read (10m)", "2. Drills (5m)", "3. Vocab (5m)", "4. Record (10m)"])
 
 with tab1:
     st.subheader("Slow Reading")
-    st.write("Read the following paragraph out loud. Move your mouth *excessively*.")
-    st.info("""'The articulate architect achieved an amazing advantage by 
-    addressing the audience with absolute authenticity.'""")
-    st.caption("Focus on the 'T' and 'K' sounds at the ends of words.")
+    st.write("Read this aloud. Over-articulate every single syllable.")
+    st.info("""'Precision in speech is the precursor to professional power. 
+    When we articulate clearly, we command the room and instill confidence 
+    in our clients and ourselves.'""")
 
 with tab2:
     st.subheader("Enunciation Drills")
-    st.write("Repeat these 5 times each, faster every time:")
-    st.warning("1. Red Leather, Yellow Leather\n\n2. Six slippery snails slid slowly\n\n3. Truly rural")
+    st.write("Repeat these 5 times each. Feel your facial muscles working!")
+    st.warning("1. Red Leather, Yellow Leather\n\n2. The specific skeptic speaks specifically.\n\n3. Proper copper coffee pot.")
 
 with tab3:
-    st.subheader("Vocabulary: The 'Client' Words")
-    st.write("Try to use these 3 words in your recording next:")
-    st.success("**Pivot** (to change direction) | **Leverage** (to use effectively) | **Holistic** (considering the whole)")
+    st.subheader("Vocabulary Expansion")
+    st.write("Incorporate these into your recording next:")
+    st.success("**Synchronicity** (happening at the same time) | **Scalable** (able to grow) | **Concise** (brief but comprehensive)")
 
-# --- PART 3: RECORD & PLAYBACK ---
 with tab4:
     st.subheader("Record & Playback")
-    st.write("Explain your goal of doing a TED talk one day. Use your 3 new vocab words.")
+    st.write("Simulation: *A client asks you, 'What is your vision for your career in 3 years?'*")
     
-    # This creates a real record button and playback UI
     audio = mic_recorder(
         start_prompt="Click to Start Recording",
         stop_prompt="Click to Stop & Listen",
@@ -53,14 +79,10 @@ with tab4:
 
     if audio:
         st.audio(audio['bytes'])
-        st.download_button("Download My Speech", audio['bytes'], file_name="my_practice.wav")
-        st.write("---")
-        st.write("**Self-Correction Checklist:**")
-        st.checkbox("Did I mumble any endings?")
-        st.checkbox("Did I breathe between sentences?")
-        st.checkbox("Did I sound like I believe what I'm saying?")
+        st.write("**Self-Reflection:** Did you use your new vocabulary? Was your voice 'blurry' or 'bright'?")
 
-# --- PART 9: PROGRESS TRACKING ---
-st.sidebar.header("Your Progress")
-days = st.sidebar.slider("Days Completed", 0, 30, 1)
-st.sidebar.write(f"You are {int((days/30)*100)}% of the way to your Stage Goal!")
+# --- PROGRESS TRACKING ---
+st.sidebar.header("Stage Readiness")
+progress = st.sidebar.slider("Days Active", 0, 30, 5)
+st.sidebar.progress(progress * 3.33 / 100)
+st.sidebar.write(f"Current Level: {'Newcomer' if progress < 10 else 'Rising Speaker'}")
