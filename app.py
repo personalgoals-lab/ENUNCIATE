@@ -1,70 +1,66 @@
 import streamlit as st
+from streamlit_mic_recorder import mic_recorder
 import time
 
-st.set_page_config(page_title="Eloquence Engine", layout="centered")
+st.set_page_config(page_title="Eloquence Engine", page_icon="🎙️")
 
-st.title("🎙️ The Eloquence Engine")
-st.subheader("Daily Communication Training")
+# --- PART 8 & 1: STABILIZE & GROUNDING (The Therapy Layer) ---
+st.title("🎙️ Eloquence Engine")
+with st.expander("✨ Step 1: Ground Your Nervous System", expanded=True):
+    st.write("Before you speak, you must be calm. Follow the prompt below:")
+    st.info("Inhale for 4 seconds... Hold for 7... Exhale for 8.")
+    if st.button("Start 1-Minute Grounding Timer"):
+        progress_bar = st.progress(0)
+        for i in range(60):
+            time.sleep(1)
+            progress_bar.progress((i + 1) / 60)
+        st.success("You are grounded. Your voice is ready.")
 
-# --- Progress Tracking (Mock Data) ---
-def show_progress():
-    st.sidebar.header("Your Progress")
-    st.sidebar.progress(70) # Example 70%
-    st.sidebar.write("🔥 5 Day Streak")
-    st.sidebar.write("📊 Clarity Score: 8.5/10")
+# --- THE 30-MINUTE DAILY TRAINING (Part 10) ---
+st.divider()
+st.header("Today's Training")
 
-show_progress()
-
-# --- Part 1: Grounding (Therapy Layer) ---
-with st.expander("Step 1: Grounding & Stabilization (2 Mins)", expanded=True):
-    st.info("Follow the circle: Inhale as it grows, Exhale as it shrinks.")
-    st.write("Focus on the physical sensation of your feet on the floor.")
-
-# --- Part 2: The 30-Minute Daily Circuit ---
-tab1, tab2, tab3, tab4 = st.tabs(["Read Aloud", "Enunciation", "Vocabulary", "Record"])
+tab1, tab2, tab3, tab4 = st.tabs(["1. Read (10m)", "2. Drills (5m)", "3. Vocab (5m)", "4. Record (10m)"])
 
 with tab1:
-    st.header("10 Mins: Slow Reading")
-    st.write("**Topic of the Day:** *The Future of Client Relations*")
-    st.markdown("""
-    > "Confidence is not the absence of fear, but the mastery of it. 
-    > When we speak to clients, we are not just delivering data; 
-    > we are delivering a sense of security and expertise."
-    """)
-    st.caption("Read this 3 times: Once fast, once slow, once with 'chewing' movements.")
+    st.subheader("Slow Reading")
+    st.write("Read the following paragraph out loud. Move your mouth *excessively*.")
+    st.info("""'The articulate architect achieved an amazing advantage by 
+    addressing the audience with absolute authenticity.'""")
+    st.caption("Focus on the 'T' and 'K' sounds at the ends of words.")
 
 with tab2:
-    st.header("5 Mins: Enunciation Drills")
-    drills = [
-        "The blue bluebird blinks at the bright breeze.",
-        "Specific statistics suggest systemic success.",
-        "Unique New York, You know you need New York."
-    ]
-    for drill in drills:
-        st.button(drill)
+    st.subheader("Enunciation Drills")
+    st.write("Repeat these 5 times each, faster every time:")
+    st.warning("1. Red Leather, Yellow Leather\n\n2. Six slippery snails slid slowly\n\n3. Truly rural")
 
 with tab3:
-    st.header("5 Mins: Vocabulary Expansion")
-    st.table({
-        "Word": ["Articulate", "Pragmatic", "Nuanced"],
-        "Definition": ["Able to express ideas clearly", "Dealing with things sensibly", "Subtle shades of meaning"],
-        "Client Context": ["'Let me articulate that solution...'", "'The pragmatic approach is...'", "'There is a nuanced difference...'"]
-    })
+    st.subheader("Vocabulary: The 'Client' Words")
+    st.write("Try to use these 3 words in your recording next:")
+    st.success("**Pivot** (to change direction) | **Leverage** (to use effectively) | **Holistic** (considering the whole)")
 
+# --- PART 3: RECORD & PLAYBACK ---
 with tab4:
-    st.header("10 Mins: Record & Simulation")
-    st.write("**Prompt:** Explain to a client why they should choose your service.")
-    # In a real app, you'd use a recording component like streamlit-mic-recorder
-    st.warning("Use your phone or local recorder for this 3-5 minute block.")
-    if st.button("Start Playback Timer"):
-        with st.empty():
-            for i in range(300, 0, -1):
-                st.write(f"Remaining: {i//60}:{i%60:02d}")
-                time.sleep(1)
-            st.success("Session Complete!")
+    st.subheader("Record & Playback")
+    st.write("Explain your goal of doing a TED talk one day. Use your 3 new vocab words.")
+    
+    # This creates a real record button and playback UI
+    audio = mic_recorder(
+        start_prompt="Click to Start Recording",
+        stop_prompt="Click to Stop & Listen",
+        key='recorder'
+    )
 
-# --- Stimulate Real Client Conversation ---
-st.divider()
-st.subheader("Client Simulation Challenge")
-st.write("*Client: 'I'm worried this project is going to take too long. Why should I trust you?'*")
-st.text_area("Draft your response using the PEEL method:")
+    if audio:
+        st.audio(audio['bytes'])
+        st.download_button("Download My Speech", audio['bytes'], file_name="my_practice.wav")
+        st.write("---")
+        st.write("**Self-Correction Checklist:**")
+        st.checkbox("Did I mumble any endings?")
+        st.checkbox("Did I breathe between sentences?")
+        st.checkbox("Did I sound like I believe what I'm saying?")
+
+# --- PART 9: PROGRESS TRACKING ---
+st.sidebar.header("Your Progress")
+days = st.sidebar.slider("Days Completed", 0, 30, 1)
+st.sidebar.write(f"You are {int((days/30)*100)}% of the way to your Stage Goal!")
